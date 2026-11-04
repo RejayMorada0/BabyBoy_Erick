@@ -1,0 +1,813 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#cfe3f5">
+  <title>Happy Birthday!</title>
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    /* ========================================
+       1. THEME & GLOBAL STYLES
+    ======================================== */
+
+    :root {
+      --bg: #cfe3f5;
+      --card: #fff8f0;
+      --ink: #2b2340;
+      --accent: #ff8fb1;
+      --accent2: #ffd36e;
+      --mint: #a8e6cf;
+
+      --radius: 28px;
+      --shadow: 6px 6px 0 var(--ink);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+
+      padding:
+        env(safe-area-inset-top, 0px)
+        12px
+        env(safe-area-inset-bottom, 0px);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 20% 20%, #ffffff55 0 8%, transparent 9%),
+        radial-gradient(circle at 85% 75%, #ff8fb133 0 14%, transparent 15%);
+
+      color: var(--ink);
+      font-family: "Fredoka", ui-rounded, "Comic Sans MS", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #2a2f4a;
+        --card: #3b3358;
+        --ink: #fff3e6;
+      }
+    }
+
+
+    /* ========================================
+       2. MAIN LAYOUT
+    ======================================== */
+
+    .wrap {
+      width: min(440px, 100%);
+      position: relative;
+      margin: 24px auto;
+    }
+
+    .bar {
+      height: 10px;
+      margin-bottom: 14px;
+      overflow: hidden;
+
+      border-radius: 9px;
+      background: #ffffff88;
+    }
+
+    .bar i {
+      display: block;
+      width: 0;
+      height: 100%;
+
+      border-radius: 9px;
+      background: var(--accent);
+
+      transition: width 0.4s ease;
+    }
+
+    .card {
+      min-height: 470px;
+      padding: 24px 18px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
+      background: var(--card);
+      border: 3px solid var(--ink);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+
+      text-align: center;
+
+      animation: pop 0.35s ease;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+
+    /* ========================================
+       3. CHARACTER IMAGE
+    ======================================== */
+
+    .hi {
+      display: block;
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+
+      animation: bob 2.4s ease-in-out infinite;
+    }
+
+
+    /* ========================================
+       4. QUESTION & ANSWER STYLES
+    ======================================== */
+
+    .tag {
+      padding: 3px 12px;
+
+      background: var(--accent2);
+      color: #2b2340;
+
+      border: 2px solid var(--ink);
+      border-radius: 20px;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .opts {
+      position: relative;
+
+      width: 100%;
+      min-height: 60px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      padding: 11px 14px;
+
+      background: #fff;
+      color: #2b2340;
+
+      border: 3px solid var(--ink);
+      border-radius: 18px;
+      box-shadow: 3px 3px 0 var(--ink);
+
+      font: inherit;
+      font-size: 17px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.1s ease,
+        background 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--mint);
+    }
+
+    button:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    button.big {
+      background: var(--accent);
+    }
+
+    .react {
+      min-height: 24px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+
+    /* ========================================
+       5. RESTAURANT SELECTION
+    ======================================== */
+
+    .rest {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .rest button {
+      flex: 1;
+      min-width: 0;
+      padding: 16px 8px;
+      font-size: 16px;
+    }
+
+    .rest span {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 34px;
+    }
+
+    .rest small {
+      font-size: 12px;
+    }
+
+
+    /* ========================================
+       6. ANIMATIONS
+    ======================================== */
+
+    @keyframes pop {
+      from {
+        transform: scale(0.92) rotate(-2deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes bob {
+      50% {
+        transform: translateY(-6px) rotate(2deg);
+      }
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(540deg);
+      }
+    }
+
+    .conf {
+      position: fixed;
+      top: -20px;
+      z-index: 10;
+
+      font-size: 24px;
+      pointer-events: none;
+
+      animation: fall 2.6s linear forwards;
+    }
+
+
+    /* ========================================
+       7. RESPONSIVE DESIGN
+    ======================================== */
+
+    @media (max-width: 380px) {
+      .card {
+        padding: 20px 14px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .rest {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ========================================
+       8. MAIN HTML
+  ======================================== -->
+
+  <main class="wrap">
+
+    <div class="bar" aria-label="Quiz progress">
+      <i id="progress"></i>
+    </div>
+
+    <section class="card" id="card" aria-live="polite"></section>
+
+  </main>
+
+
+  <script>
+
+    // ========================================
+    // 9. CUSTOMIZATION
+    // ========================================
+
+    const CONFIG = {
+      name: "Babyboy Honeybee 🐝",
+
+      // Restaurant choices
+      restaurants: [
+        {
+          name: "Firefly Roofdeck Restaurant, Makati",
+          emoji: "🌃",
+          description: "Rooftop date with you 💗"
+        },
+        {
+          name: "Ako na bahala",
+          emoji: "🤫",
+          description: "Just trust me, birthday boy!"
+        }
+      ],
+
+      // Character image
+      characterImage: "character.png"
+    };
+
+
+    // ========================================
+    // 10. QUIZ QUESTIONS
+    // ========================================
+
+    const QUESTIONS = [
+      {
+        question: `Hi ${CONFIG.name}! 🎂 Somebody turned a year older (and slightly more annoying). Ready for a very serious quiz?`,
+        options: [
+          "I was born ready",
+          "I'm scared..."
+        ],
+        reactions: [
+          "Good. Hydrate first. 💧",
+          "Too late, no refunds. 😈"
+        ]
+      },
+
+      {
+        question: "Do you love me?",
+        dodge: 1,
+        options: [
+          "Yes 💖",
+          "No"
+        ],
+        reactions: [
+          "Correct answer. Wow smart. ✨"
+        ]
+      },
+
+      {
+        question: "How old are you mentally?",
+        options: [
+          "12 and hungry",
+          "Ancient wizard 🧙",
+          "A confused toddler",
+          "Still 25 (lying)"
+        ],
+        reactions: [
+          "Same. 🍟",
+          "Wise but sleepy.",
+          "Honestly? Accurate.",
+          "The audacity! 😭"
+        ]
+      },
+
+      {
+        question: "Choose your birthday superpower",
+        options: [
+          "Teleport to snacks",
+          "Never get lost",
+          "Talk to cats",
+          "Sleep anywhere"
+        ],
+        reactions: [
+          "Efficient. 🍔",
+          "Finally, a use for you.",
+          "Cats will gossip about you 🐱",
+          "You already have this one 😴"
+        ]
+      },
+
+      {
+        question: "I stole one of your fries. Reaction?",
+        options: [
+          "Fine, you're cute",
+          "VIOLENCE",
+          "I stole it back",
+          "Pretend I didn't see"
+        ],
+        reactions: [
+          "Love wins. 🥹",
+          "Noted. I'll hide better. 🏃‍♀️",
+          "The fry war begins. 🍟⚔️",
+          "Suspicious. I'm watching you. 👀"
+        ]
+      },
+
+      {
+        question: "Who is the cuter one in this relationship?",
+        dodge: 0,
+        options: [
+          "Me 😎",
+          "You 🥰"
+        ],
+        reactions: [
+          "Wrong. Try again… just kidding. 😌"
+        ]
+      },
+
+      {
+        question: "If I were a snack, I'd be…",
+        options: [
+          "Sweet & dangerous 🍬",
+          "Spicy chips 🌶️",
+          "Your last bite 😭",
+          "Free food"
+        ],
+        reactions: [
+          "Obviously. 🍭",
+          "Hot AND crunchy. 🔥",
+          "Don't. I'm emotional. 💔",
+          "The only correct answer. 🙌"
+        ]
+      },
+
+      {
+        question: "Final question: will you take me out to eat for your birthday?",
+        options: [
+          "Yes obviously",
+          "I'd pay for you 🥺"
+        ],
+        reactions: [
+          "Good, I was hungry anyway. 🍽️",
+          "Okay that was cute. 💞"
+        ]
+      }
+    ];
+
+
+    // ========================================
+    // 11. GAME STATE
+    // ========================================
+
+    let currentQuestion = 0;
+
+    const card = document.getElementById("card");
+    const progress = document.getElementById("progress");
+
+    const TOTAL_QUESTIONS = QUESTIONS.length;
+
+
+    // ========================================
+    // 12. CHARACTER IMAGE
+    // ========================================
+
+    function createCharacter() {
+      const image = document.createElement("img");
+
+      image.className = "hi";
+      image.src = CONFIG.characterImage;
+      image.alt = "Birthday character";
+
+      return image;
+    }
+
+
+    // ========================================
+    // 13. PROGRESS BAR
+    // ========================================
+
+    function updateProgress() {
+      const percentage =
+        (currentQuestion / TOTAL_QUESTIONS) * 100;
+
+      progress.style.width = `${percentage}%`;
+    }
+
+
+    // ========================================
+    // 14. RENDER QUESTION
+    // ========================================
+
+    function renderQuestion() {
+      updateProgress();
+
+      const question = QUESTIONS[currentQuestion];
+
+      card.replaceChildren(
+        createCharacter(),
+        createTag(
+          `Question ${currentQuestion + 1} of ${TOTAL_QUESTIONS}`
+        ),
+        createHeading(
+          question.question,
+          question.question.length > 60 ? 20 : 26
+        )
+      );
+
+      const optionsContainer = document.createElement("div");
+      optionsContainer.className = "opts";
+
+      const reaction = document.createElement("div");
+      reaction.className = "react";
+      reaction.setAttribute("aria-live", "polite");
+
+      question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.textContent = option;
+
+        if (question.dodge === index) {
+          setupDodgingButton(button);
+        } else {
+          if (index === 0) {
+            button.classList.add("big");
+          }
+
+          button.addEventListener("click", () => {
+            selectAnswer(index, question, optionsContainer, reaction);
+          });
+        }
+
+        optionsContainer.appendChild(button);
+      });
+
+      card.append(optionsContainer, reaction);
+    }
+
+
+    // ========================================
+    // 15. REUSABLE HTML ELEMENTS
+    // ========================================
+
+    function createTag(text) {
+      const tag = document.createElement("span");
+
+      tag.className = "tag";
+      tag.textContent = text;
+
+      return tag;
+    }
+
+    function createHeading(text, size = 26) {
+      const heading = document.createElement("h1");
+
+      heading.textContent = text;
+      heading.style.fontSize = `${size}px`;
+
+      return heading;
+    }
+
+
+    // ========================================
+    // 16. DODGING BUTTON
+    // ========================================
+
+    function setupDodgingButton(button) {
+      const messages = [
+        "Nope 😜",
+        "Too slow!",
+        "Try again",
+        "Hehe ✨"
+      ];
+
+      function dodge(event) {
+        if (event.type === "touchstart") {
+          event.preventDefault();
+        }
+
+        const parent = button.parentElement;
+
+        const maxX = Math.max(
+          0,
+          parent.clientWidth - button.offsetWidth
+        );
+
+        const maxY = Math.max(
+          0,
+          parent.clientHeight - button.offsetHeight
+        );
+
+        button.style.position = "absolute";
+        button.style.left = `${Math.random() * maxX}px`;
+        button.style.top = `${Math.random() * maxY}px`;
+
+        button.textContent =
+          messages[Math.floor(Math.random() * messages.length)];
+      }
+
+      button.addEventListener("mouseenter", dodge);
+      button.addEventListener("touchstart", dodge, {
+        passive: false
+      });
+    }
+
+
+    // ========================================
+    // 17. ANSWER HANDLING
+    // ========================================
+
+    function selectAnswer(index, question, container, reaction) {
+      reaction.textContent =
+        question.reactions[index] || question.reactions[0];
+
+      container.querySelectorAll("button").forEach(button => {
+        button.disabled = true;
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+
+        if (currentQuestion >= TOTAL_QUESTIONS) {
+          renderFinalQuestion();
+        } else {
+          renderQuestion();
+        }
+      }, 1100);
+    }
+
+
+    // ========================================
+    // 18. FINAL RESTAURANT SELECTION
+    // ========================================
+
+    function renderFinalQuestion() {
+      updateProgress();
+
+      const heading = createHeading("Where shall we eat? 🍽️");
+
+      const subtitle = document.createElement("p");
+      subtitle.textContent = "Pick one, birthday boy 👇";
+
+      const restaurantContainer = document.createElement("div");
+      restaurantContainer.className = "rest";
+
+      CONFIG.restaurants.forEach((restaurant, index) => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+
+        const emoji = document.createElement("span");
+        emoji.textContent = restaurant.emoji;
+
+        const name = document.createTextNode(restaurant.name);
+
+        const description = document.createElement("small");
+        description.textContent = restaurant.description;
+
+        button.append(
+          emoji,
+          name,
+          document.createElement("br"),
+          description
+        );
+
+        button.addEventListener("click", () => {
+          finishQuiz(index);
+        });
+
+        restaurantContainer.appendChild(button);
+      });
+
+      card.replaceChildren(
+        createCharacter(),
+        createTag("Last one!"),
+        heading,
+        subtitle,
+        restaurantContainer
+      );
+    }
+
+
+    // ========================================
+    // 19. CONFETTI EFFECT
+    // ========================================
+
+    function createConfetti() {
+      const emojis = [
+        "🎉", "🎂", "💖", "✨", "🎈", "🍰", "⭐"
+      ];
+
+      for (let i = 0; i < 36; i++) {
+        const confetti = document.createElement("div");
+
+        confetti.className = "conf";
+        confetti.textContent = emojis[i % emojis.length];
+
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDelay = `${Math.random() * 1.2}s`;
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4500);
+      }
+    }
+
+
+    // ========================================
+    // 20. FINAL BIRTHDAY MESSAGE
+    // ========================================
+
+    function finishQuiz(index) {
+      const restaurant = CONFIG.restaurants[index];
+
+      progress.style.width = "100%";
+
+      createConfetti();
+
+      const message = document.createElement("p");
+
+      message.append(
+        document.createTextNode(
+          `${restaurant.emoji} ${restaurant.name} it is.`
+        )
+      );
+
+      const birthdayMessage = document.createElement("p");
+      birthdayMessage.textContent =
+        `Happy Birthday, ${CONFIG.name}! I love you to the moon and back (and also to the fries). 💖`;
+
+      const restartButton = document.createElement("button");
+
+      restartButton.type = "button";
+      restartButton.textContent = "Play again 🔁";
+      restartButton.addEventListener("click", restartQuiz);
+
+      card.replaceChildren(
+        createCharacter(),
+        createHeading("It's a date! 🎉"),
+        message,
+        birthdayMessage,
+        restartButton
+      );
+    }
+
+
+    // ========================================
+    // 21. RESTART GAME
+    // ========================================
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      renderQuestion();
+    }
+
+
+    // ========================================
+    // 22. INITIALIZE GAME
+    // ========================================
+
+    renderQuestion();
+
+  </script>
+
+</body>
+</html>
